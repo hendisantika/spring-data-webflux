@@ -1,5 +1,7 @@
 package com.hendisantika.controller
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.hendisantika.model.Employee
 import com.hendisantika.model.Organization
 import org.junit.jupiter.api.*
 import org.mockserver.integration.ClientAndServer
@@ -111,5 +113,13 @@ class OrganizationControllerTests {
                 .jsonPath("$.employees.length()").isEqualTo(2)
                 .jsonPath("$.employees[0].id").isEqualTo(1)
                 .jsonPath("$.employees[1].id").isEqualTo(2)
+    }
+
+    private fun createEmployees(): String {
+        val employees: List<Employee> = listOf<Employee>(
+                Employee(1, "Test1", 10000, 1),
+                Employee(2, "Test2", 20000, 1)
+        )
+        return jacksonObjectMapper().writeValueAsString(employees)
     }
 }
