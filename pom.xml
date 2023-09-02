@@ -17,7 +17,7 @@
 
     <modules>
         <module>employee-service</module>
-        <!--        <module>organization-service</module>-->
+        <module>organization-service</module>
     </modules>
 
     <properties>
