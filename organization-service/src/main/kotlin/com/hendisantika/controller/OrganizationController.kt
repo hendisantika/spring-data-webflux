@@ -1,5 +1,7 @@
 package com.hendisantika.controller
 
+import com.hendisantika.dto.OrganizationDTO
+import com.hendisantika.model.Employee
 import com.hendisantika.model.Organization
 import com.hendisantika.repository.OrganizationRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,4 +38,14 @@ class OrganizationController {
 
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Int): Mono<Organization> = repository.findById(id)
+
+    @GetMapping("/{id}/with-employees")
+    fun findByIdWithEmployees(@PathVariable id: Int): Mono<OrganizationDTO> {
+        val employees: Flux<Employee> = client.get().uri("/employees/organization/$id")
+                .retrieve().bodyToFlux(Employee::class.java)
+        val org: Mono<Organization> = repository.findById(id)
+        return org.zipWith(employees.collectList()).log()
+                .map { tuple -> OrganizationDTO(tuple.t1.id as Int, tuple.t1.name, tuple.t2) }
+    }
+
 }
