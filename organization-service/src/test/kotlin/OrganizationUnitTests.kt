@@ -1,5 +1,7 @@
 import com.hendisantika.dto.OrganizationDTO
+import com.hendisantika.model.Employee
 import org.junit.jupiter.api.Test
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 /**
@@ -23,5 +25,9 @@ class OrganizationUnitTests {
         }
         println("Mono: ${ret.block()!!.employees}")
 
+    }
+
+    fun getEmployeesByOrganizationId(organizationId: Int): Flux<Employee> {
+        return Flux.fromIterable(mutableListOf(Employee(1, "X", 1, 1), Employee(2, "Y", 2, 2)))
     }
 }
