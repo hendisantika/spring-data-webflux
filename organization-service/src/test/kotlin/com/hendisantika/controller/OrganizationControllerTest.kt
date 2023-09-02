@@ -1,9 +1,6 @@
 package com.hendisantika.controller
 
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.MethodOrderer
-import org.junit.jupiter.api.TestMethodOrder
+import org.junit.jupiter.api.*
 import org.mockserver.integration.ClientAndServer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -57,5 +54,9 @@ class OrganizationControllerTests {
         }
     }
 
+    @Test
+    @Order(1)
+    fun shouldStart() {
+    }
 
 }
