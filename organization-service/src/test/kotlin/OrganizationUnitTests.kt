@@ -1,5 +1,6 @@
 import com.hendisantika.dto.OrganizationDTO
 import com.hendisantika.model.Employee
+import com.hendisantika.model.Organization
 import org.junit.jupiter.api.Test
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -20,7 +21,7 @@ class OrganizationUnitTests {
 //        val ret : Mono<Flux<OrganizationDTO>> = getOrganizationByName("X")
 //                .map { org -> getEmployees(org.id!!).map { emp -> OrganizationDTO(org.id as Int, org.name, emp) } }
 
-        val ret: Mono<OrganizationDTO> = getOrganizationByName("X").zipWith(getEmployees(1).collectList()).map { tuple ->
+        val ret: Mono<OrganizationDTO> = getOrganizationByName("X").zipWith(getEmployeesByOrganizationId(1).collectList()).map { tuple ->
             OrganizationDTO(tuple.t1.id as Int, tuple.t1.name, tuple.t2)
         }
         println("Mono: ${ret.block()!!.employees}")
@@ -29,5 +30,11 @@ class OrganizationUnitTests {
 
     fun getEmployeesByOrganizationId(organizationId: Int): Flux<Employee> {
         return Flux.fromIterable(mutableListOf(Employee(1, "X", 1, 1), Employee(2, "Y", 2, 2)))
+    }
+
+    fun getOrganizationByName(name: String): Mono<Organization> {
+        val org = Organization(name)
+        org.id = 1
+        return Mono.just(org)
     }
 }
