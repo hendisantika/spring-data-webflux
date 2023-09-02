@@ -67,4 +67,14 @@ class EmployeeControllerTests {
                 .expectBody()
                 .jsonPath("$.id").isNotEmpty
     }
+
+    @Test
+    @Order(3)
+    fun shouldFindEmployees() {
+        webTestClient.get().uri("/employees").accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().is2xxSuccessful
+                .expectBody().jsonPath("$.length()").isEqualTo(1)
+                .jsonPath("$[0].id").isNotEmpty
+    }
 }
