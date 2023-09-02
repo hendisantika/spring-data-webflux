@@ -1,10 +1,12 @@
 package com.hendisantika.controller
 
+import com.hendisantika.model.Organization
 import org.junit.jupiter.api.*
 import org.mockserver.integration.ClientAndServer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
+import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
@@ -57,6 +59,17 @@ class OrganizationControllerTests {
     @Test
     @Order(1)
     fun shouldStart() {
+    }
+
+    @Test
+    @Order(2)
+    fun shouldAddOrganization() {
+        webTestClient.post().uri("/organizations").contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(Organization("Test"))
+                .exchange()
+                .expectStatus().is2xxSuccessful
+                .expectBody()
+                .jsonPath("$.id").isNotEmpty
     }
 
 }
