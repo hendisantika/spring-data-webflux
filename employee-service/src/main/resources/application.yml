@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: employee-service
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/spring
+    username: postgres
+    password: hendi34
+
+server.port: 8080
+
+management:
+  endpoints.web.exposure.include: '*'
+  endpoint.health:
+    show-details: always
+    probes:
+      enabled: true
