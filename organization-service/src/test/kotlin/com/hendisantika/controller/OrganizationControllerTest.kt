@@ -82,4 +82,14 @@ class OrganizationControllerTests {
                 .jsonPath("$.id").isNotEmpty
     }
 
+    @Test
+    @Order(3)
+    fun shouldFindOrganizations() {
+        webTestClient.get().uri("/organizations").accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().is2xxSuccessful
+                .expectBody().jsonPath("$.length()").isEqualTo(1)
+                .jsonPath("$[0].id").isNotEmpty
+    }
+
 }
