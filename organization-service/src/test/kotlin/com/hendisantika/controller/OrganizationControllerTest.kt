@@ -1,10 +1,16 @@
 package com.hendisantika.controller
 
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.TestMethodOrder
+import org.mockserver.integration.ClientAndServer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
 /**
@@ -24,6 +30,32 @@ class OrganizationControllerTests {
 
     @Autowired
     private lateinit var webTestClient: WebTestClient
+
+
+    companion object {
+
+        @Container
+        @ServiceConnection
+        val container = PostgreSQLContainer<Nothing>("postgres:15-alpine").apply {
+            withDatabaseName("spring")
+            withUsername("hendi")
+            withPassword("hendi34")
+        }
+
+        private var mockServer: ClientAndServer? = null
+
+        @BeforeAll
+        @JvmStatic
+        internal fun beforeAll() {
+            mockServer = ClientAndServer.startClientAndServer(8090)
+        }
+
+        @AfterAll
+        @JvmStatic
+        internal fun afterAll() {
+            mockServer!!.stop()
+        }
+    }
 
 
 }
