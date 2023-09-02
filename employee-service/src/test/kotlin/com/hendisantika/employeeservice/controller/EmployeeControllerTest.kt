@@ -1,6 +1,8 @@
 package com.hendisantika.employeeservice.controller
 
 import org.junit.jupiter.api.MethodOrderer
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -36,7 +38,11 @@ class EmployeeControllerTests {
             withUsername("hendi")
             withPassword("hendi34")
         }
+    }
 
+    @Test
+    @Order(1)
+    fun shouldStart() {
     }
 
 }
