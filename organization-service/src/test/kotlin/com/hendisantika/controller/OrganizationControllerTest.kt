@@ -3,6 +3,8 @@ package com.hendisantika.controller
 import com.hendisantika.model.Organization
 import org.junit.jupiter.api.*
 import org.mockserver.integration.ClientAndServer
+import org.mockserver.model.HttpRequest.request
+import org.mockserver.model.HttpResponse.response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
@@ -92,4 +94,22 @@ class OrganizationControllerTests {
                 .jsonPath("$[0].id").isNotEmpty
     }
 
+    @Test
+    @Order(3)
+    fun shouldFindOrganizationWithEmployees() {
+        mockServer!!.`when`(request().withMethod("GET").withPath("/employees/organization/1"))
+                .respond(response()
+                        .withStatusCode(200)
+                        .withContentType(org.mockserver.model.MediaType.APPLICATION_JSON)
+                        .withBody(createEmployees()))
+
+        webTestClient.get().uri("/organizations/1/with-employees").accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().is2xxSuccessful
+                .expectBody()
+                .jsonPath("$.id").isNotEmpty
+                .jsonPath("$.employees.length()").isEqualTo(2)
+                .jsonPath("$.employees[0].id").isEqualTo(1)
+                .jsonPath("$.employees[1].id").isEqualTo(2)
+    }
 }
