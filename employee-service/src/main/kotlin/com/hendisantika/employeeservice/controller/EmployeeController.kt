@@ -3,10 +3,7 @@ package com.hendisantika.employeeservice.controller
 import com.hendisantika.employeeservice.model.Employee
 import com.hendisantika.employeeservice.repostory.EmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -35,4 +32,7 @@ class EmployeeController {
 
     @GetMapping("/organization/{organizationId}")
     fun findByOrganizationId(@PathVariable organizationId: Int): Flux<Employee> = employeeRepository.findByOrganizationId(organizationId)
+
+    @PostMapping
+    fun add(@RequestBody employee: Employee): Mono<Employee> = employeeRepository.save(employee)
 }
