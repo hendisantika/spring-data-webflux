@@ -1,5 +1,6 @@
 package com.hendisantika.employeeservice.controller
 
+import com.hendisantika.employeeservice.model.Employee
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
+import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
@@ -45,4 +47,14 @@ class EmployeeControllerTests {
     fun shouldStart() {
     }
 
+    @Test
+    @Order(2)
+    fun shouldAddEmployee() {
+        webTestClient.post().uri("/employees").contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(Employee("Test", 1000, 1))
+                .exchange()
+                .expectStatus().is2xxSuccessful
+                .expectBody()
+                .jsonPath("$.id").isNotEmpty
+    }
 }
