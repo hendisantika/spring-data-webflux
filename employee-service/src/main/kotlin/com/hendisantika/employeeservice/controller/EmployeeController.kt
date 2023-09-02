@@ -32,4 +32,7 @@ class EmployeeController {
 
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Int): Mono<Employee> = employeeRepository.findById(id)
+
+    @GetMapping("/organization/{organizationId}")
+    fun findByOrganizationId(@PathVariable organizationId: Int): Flux<Employee> = employeeRepository.findByOrganizationId(organizationId)
 }
