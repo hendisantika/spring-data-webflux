@@ -4,7 +4,10 @@ import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
 /**
@@ -23,5 +26,17 @@ import org.testcontainers.junit.jupiter.Testcontainers
 class EmployeeControllerTests {
     @Autowired
     private lateinit var webTestClient: WebTestClient
+
+    companion object {
+
+        @Container
+        @ServiceConnection
+        val container = PostgreSQLContainer<Nothing>("postgres:15-alpine").apply {
+            withDatabaseName("spring")
+            withUsername("hendi")
+            withPassword("hendi34")
+        }
+
+    }
 
 }
