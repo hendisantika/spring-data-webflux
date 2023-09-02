@@ -5,10 +5,7 @@ import com.hendisantika.model.Employee
 import com.hendisantika.model.Organization
 import com.hendisantika.repository.OrganizationRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -48,4 +45,6 @@ class OrganizationController {
                 .map { tuple -> OrganizationDTO(tuple.t1.id as Int, tuple.t1.name, tuple.t2) }
     }
 
+    @PostMapping
+    fun add(@RequestBody employee: Organization): Mono<Organization> = repository.save(employee)
 }
