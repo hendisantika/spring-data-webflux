@@ -1,10 +1,13 @@
 package com.hendisantika.controller
 
+import com.hendisantika.model.Organization
 import com.hendisantika.repository.OrganizationRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.reactive.function.client.WebClient
+import reactor.core.publisher.Flux
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,4 +28,7 @@ class OrganizationController {
 
     @Autowired
     lateinit var client: WebClient
+
+    @GetMapping
+    fun findAll(): Flux<Organization> = repository.findAll()
 }
